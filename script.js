@@ -1,4 +1,4 @@
-const myLibrary=[];
+let myLibrary=[];
 
 //function to create Book object
 function Book(title,author,pages,hasread) {
@@ -106,19 +106,18 @@ submitBookButton.addEventListener("click", (e) => {
 
 //button to remove book from library
 function removeBook () {    
-    //console.log("remove!");
-    //console.log(this);
-    //console.log(this.classList);
-    //console.log(this.classList[1]);
+    let newLibrary=[];
     myLibrary.forEach(book => {
         const checkBookClass=book.title.toLowerCase().split(" ").join("-");
-        console.log(checkBookClass);
         if(checkBookClass==this.classList[1]){
             const bookContainer=document.querySelector(`.${checkBookClass}`).parentNode.parentNode;
-            //console.log(bookContainer);
             container.removeChild(bookContainer);
-        };
+        } else {
+            newLibrary.push(book);
+        }
     });
+    myLibrary=newLibrary;
+    return myLibrary;
 };
 
 myLibrary.forEach(addLibraryToDisplay);

@@ -1,5 +1,6 @@
 const myLibrary=[];
 
+//function to create Book object
 function Book(title,author,pages,hasread) {
     this.title=title;
     this.author=author;
@@ -16,49 +17,84 @@ function Book(title,author,pages,hasread) {
     }
 }
 
+//testing
 const theHobbit = new Book("The Hobbit", "J.R.R. Tolkein", 295, false);
-console.log(theHobbit);
-console.log(theHobbit.info());
-
+const myLeftFoot=new Book("My Left Foot","Chrissy",100,false);
 
 function addBookToLibrary(inputBook){
     myLibrary.push(inputBook);
+    console.log("book added!");
 }
 
 addBookToLibrary(theHobbit);
-console.log(myLibrary);
-console.log(theHobbit.title);
+addBookToLibrary(myLeftFoot);
 
+const container=document.querySelector(".main-content");
 
-
+//function to create book card to display on library site
 function addLibraryToDisplay(book) {
-    let container=document.querySelector(".main-content");
-    console.log(container);
-    console.log(book);
-    console.log(book.title);
     const bookCard=document.createElement("div");
-    bookCard.classList.add("book-info");
-    const pTitle=document.createElement("p");
-    const pAuthor=document.createElement("p");
+    bookCard.classList.add("book-info");    
+    const pTitle=document.createElement("h2");
+    const pAuthor=document.createElement("h3");
     const pPages=document.createElement("p");
     const pHasRead=document.createElement("p");
-    let hasReadText="No";
     if(book.hasread==true){
-        hasReadText="Yes";
+        pHasRead.textContent=`Have Read`;
     }
     else {
-        hasReadText="No";
+        pHasRead.textContent=`Have Not Read`;
     }
-    pTitle.textContent=`Title: ${book.title}`;
+    pTitle.textContent=`${book.title}`;
     bookCard.appendChild(pTitle);
-    pAuthor.textContent=`By: ${book.author}`;
+    pAuthor.textContent=`By ${book.author}`;
     bookCard.appendChild(pAuthor);
-    pPages.textContent=`Pages: ${book.pages}`
+    pPages.textContent=`${book.pages} pages`
     bookCard.appendChild(pPages);
-    pHasRead.textContent=`Already Read: ${hasReadText}`;
     bookCard.appendChild(pHasRead);
     container.appendChild(bookCard);
 };
 
+
+
+//button to add new book
+const showBookFormButton=document.querySelector("#showBookForm");
+const dialogBookForm=document.querySelector("#dialog");
+const cancelButton=document.querySelector("#cancelBtn");
+const submitBookButton=document.querySelector("#addNewBookBtn");
+
+showBookFormButton.addEventListener("click", () => {
+    dialogBookForm.showModal();
+});
+
+cancelButton.addEventListener("click", () => {
+    dialogBookForm.close();
+});
+
+submitBookButton.addEventListener("click", (e) => {
+    const inputForm=document.querySelector("#newBookForm");
+    console.log(inputForm);
+    const inputTitle=document.querySelector("#title");
+    const inputAuthor=document.querySelector("#author");
+    const inputPages=document.querySelector("#numPages");
+    const checkTrue=document.querySelector("#hasRead").checked;
+    const inputBook = new Book(inputTitle.value,inputAuthor.value,inputPages.value,checkTrue);
+    console.log(inputTitle,inputAuthor,inputPages,checkTrue);
+    addBookToLibrary(inputBook);
+    addLibraryToDisplay(inputBook);
+    e.preventDefault();
+    dialogBookForm.close();
+    //resetting the values
+    inputTitle.value="";
+    inputAuthor.value="";
+    inputPages.value="";
+    document.querySelector("#hasRead").checked=false;
+});
+
+console.log(myLibrary);
+
 myLibrary.forEach(addLibraryToDisplay);
+
+
+
 

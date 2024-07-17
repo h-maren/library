@@ -10,9 +10,26 @@
 <body>
     <div class="header">
         <h1>My Library</h1>
+        <button id="showBookForm">Add New Book</button>
     </div>
     <div class="main-content">
          
     </div>
+
+    <dialog id="dialog">
+        <form method="submit" id="newBookForm">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="">
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" value="">
+            <label for="numPages">Number of Pages:</label>
+            <input type="number" id="numPages" name="numPages" value="">
+            <label for="hasRead">Have Read?</label>
+            <input type="checkbox" id="hasRead" name="hasRead">
+            <button type="submit" id="addNewBookBtn">Add New Book</button>
+            <button type="reset">Clear Form</button>
+            <button value="cancel" formmethod="dialog" id="cancelBtn">Cancel</button>
+        </form>
+    </dialog>
 </body>
 </html>

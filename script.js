@@ -34,7 +34,7 @@ const container=document.querySelector(".main-content");
 //function to create book card to display on library site
 function addLibraryToDisplay(book) {
     const bookCard=document.createElement("div");
-    bookCard.classList.add("book-info");    
+    bookCard.classList.add("book-info");
     const pTitle=document.createElement("h2");
     const pAuthor=document.createElement("h3");
     const pPages=document.createElement("p");
@@ -45,6 +45,7 @@ function addLibraryToDisplay(book) {
     else {
         pHasRead.textContent=`Have Not Read`;
     }
+    
     pTitle.textContent=`${book.title}`;
     bookCard.appendChild(pTitle);
     pAuthor.textContent=`By ${book.author}`;
@@ -52,9 +53,24 @@ function addLibraryToDisplay(book) {
     pPages.textContent=`${book.pages} pages`
     bookCard.appendChild(pPages);
     bookCard.appendChild(pHasRead);
+
+    //make button container at end
+    const deleteBtn=document.createElement("button");
+    deleteBtn.classList.add("delete-btn");
+    deleteBtn.textContent="Remove Book";
+    deleteBtn.classList.add(`${book.title}`.toLowerCase().split(" ").join("-"));
+    deleteBtn.addEventListener("click",removeBook);
+    const hasReadBtn=document.createElement("button");
+    hasReadBtn.classList.add("has-read-btn");
+    hasReadBtn.textContent="Change Read Status";
+    const btnDiv=document.createElement("div");
+    btnDiv.classList.add("book-btn-section");
+    btnDiv.appendChild(deleteBtn);
+    btnDiv.appendChild(hasReadBtn);
+    bookCard.appendChild(btnDiv);
+    //adding to main body
     container.appendChild(bookCard);
 };
-
 
 
 //button to add new book
@@ -72,14 +88,11 @@ cancelButton.addEventListener("click", () => {
 });
 
 submitBookButton.addEventListener("click", (e) => {
-    const inputForm=document.querySelector("#newBookForm");
-    console.log(inputForm);
     const inputTitle=document.querySelector("#title");
     const inputAuthor=document.querySelector("#author");
     const inputPages=document.querySelector("#numPages");
     const checkTrue=document.querySelector("#hasRead").checked;
     const inputBook = new Book(inputTitle.value,inputAuthor.value,inputPages.value,checkTrue);
-    console.log(inputTitle,inputAuthor,inputPages,checkTrue);
     addBookToLibrary(inputBook);
     addLibraryToDisplay(inputBook);
     e.preventDefault();
@@ -91,7 +104,22 @@ submitBookButton.addEventListener("click", (e) => {
     document.querySelector("#hasRead").checked=false;
 });
 
-console.log(myLibrary);
+//button to remove book from library
+function removeBook () {    
+    //console.log("remove!");
+    //console.log(this);
+    //console.log(this.classList);
+    //console.log(this.classList[1]);
+    myLibrary.forEach(book => {
+        const checkBookClass=book.title.toLowerCase().split(" ").join("-");
+        console.log(checkBookClass);
+        if(checkBookClass==this.classList[1]){
+            const bookContainer=document.querySelector(`.${checkBookClass}`).parentNode.parentNode;
+            //console.log(bookContainer);
+            container.removeChild(bookContainer);
+        };
+    });
+};
 
 myLibrary.forEach(addLibraryToDisplay);
 

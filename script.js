@@ -18,8 +18,8 @@ function Book(title,author,pages,hasread) {
 }
 
 //testing
-const theHobbit = new Book("The Hobbit", "J.R.R. Tolkein", 295, false);
-const myLeftFoot=new Book("My Left Foot","Chrissy",100,false);
+const theHobbit = new Book("The Hobbit", "J.R.R. Tolkein", 300, true);
+const myLeftFoot=new Book("My Left Foot","Christy Brown",184,false);
 
 function addBookToLibrary(inputBook){
     myLibrary.push(inputBook);
@@ -39,6 +39,8 @@ function addLibraryToDisplay(book) {
     const pAuthor=document.createElement("h3");
     const pPages=document.createElement("p");
     const pHasRead=document.createElement("p");
+    pHasRead.classList.add("has-read-info");
+    pHasRead.classList.add(`${book.title}`.toLowerCase().split(" ").join("-"));
     if(book.hasread==true){
         pHasRead.textContent=`Have Read`;
     }
@@ -63,6 +65,8 @@ function addLibraryToDisplay(book) {
     const hasReadBtn=document.createElement("button");
     hasReadBtn.classList.add("has-read-btn");
     hasReadBtn.textContent="Change Read Status";
+    hasReadBtn.classList.add(`${book.title}`.toLowerCase().split(" ").join("-"));
+    hasReadBtn.addEventListener("click",toggleHasRead);
     const btnDiv=document.createElement("div");
     btnDiv.classList.add("book-btn-section");
     btnDiv.appendChild(deleteBtn);
@@ -109,8 +113,8 @@ function removeBook () {
     let newLibrary=[];
     myLibrary.forEach(book => {
         const checkBookClass=book.title.toLowerCase().split(" ").join("-");
-        if(checkBookClass==this.classList[1]){
-            const bookContainer=document.querySelector(`.${checkBookClass}`).parentNode.parentNode;
+        if((this.classList[0]=="delete-btn")&&(checkBookClass==this.classList[1])){
+            const bookContainer=document.querySelector(`button.${checkBookClass}`).parentNode.parentNode;
             container.removeChild(bookContainer);
         } else {
             newLibrary.push(book);
@@ -119,6 +123,27 @@ function removeBook () {
     myLibrary=newLibrary;
     return myLibrary;
 };
+
+//button to toggle if book has been read
+function toggleHasRead () {
+    console.log(this);
+    myLibrary.forEach(book => {
+        const checkBookClass=book.title.toLowerCase().split(" ").join("-");
+        if((this.classList[0]=="has-read-btn")&&(checkBookClass==this.classList[1])){
+            const pToggle=document.querySelector(`p.${checkBookClass}`);
+            console.log(checkBookClass);
+            console.log(this);
+            console.log(pToggle);
+            if(book.hasRead==true){
+                book.hasRead=false;
+                pToggle.textContent='Have Not Read';
+            } else {
+                book.hasRead=true;
+                pToggle.textContent='Have Read';
+            }
+        };
+    });
+}
 
 myLibrary.forEach(addLibraryToDisplay);
 

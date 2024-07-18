@@ -1,0 +1,94 @@
+@font-face {
+    font-family: 'aquilinetwo';
+    src: url('fonts/aquilinetwo-webfont.woff2') format('woff2'),
+         url('fonts/aquilinetwo-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'homemade_apple';
+    src: url('fonts/homemadeapple-webfont.woff2') format('woff2'),
+         url('fonts/homemadeapple-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'robotoregular';
+    src: url('fonts/roboto-regular-webfont.woff2') format('woff2'),
+         url('fonts/roboto-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0px;
+    gap: 0px;
+    font-family: 'robotoregular', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 6fr;
+    background-image: url('library.jpg');
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+}
+
+h1, h2, h3 {
+    margin: 5px;
+}
+
+h1 {
+    font-family: 'aquilinetwo', Georgia, 'Times New Roman', Times, serif;
+    font-size: 54px;
+    color: white;
+}
+
+h2, h3, p {
+    font-family: 'homemade_apple', Georgia, 'Times New Roman', Times, serif;
+    margin: 5px;
+}
+
+button {
+    font-family: 'roboto', 'Courier New', Courier, monospace;
+    margin: 5px;
+}
+
+.delete-btn, .has-read-btn {
+    background-color: rgb(135, 62, 35);
+    color: white;
+}
+
+#showBookForm {
+    background-color: white;
+    color: rgb(135, 62, 35);
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(135, 62, 35, 0.8);
+}
+
+.book-info {
+    border-style: inset;
+    border-color: brown;
+    background-color: rgba(255,255,255,0.8);
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-content {
+    display: grid;
+    resize: both;
+    overflow: auto;
+    grid-template-columns: repeat(5,1fr);
+    grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+}
+

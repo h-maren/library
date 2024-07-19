@@ -50,12 +50,18 @@ h2, h3, p {
     margin: 5px;
 }
 
+#newBookForm {
+    font-family: 'homemade_apple', Georgia, 'Times New Roman', Times, serif;
+    display: flex;
+    flex-direction: column;
+}
+
 button {
     font-family: 'roboto', 'Courier New', Courier, monospace;
     margin: 5px;
 }
 
-.delete-btn, .has-read-btn {
+.delete-btn, .has-read-btn, #addNewBookBtn, #resetBookForm, #cancelBtn {
     background-color: rgb(135, 62, 35);
     color: white;
 }
@@ -63,6 +69,15 @@ button {
 #showBookForm {
     background-color: white;
     color: rgb(135, 62, 35);
+}
+
+.form-row {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 5px;
+}
+
+input {
 }
 
 .header {

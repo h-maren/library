@@ -1,81 +1,21 @@
-let myLibrary=[];
-
-//function to create Book object
-function Book(title,author,pages,hasread) {
-    this.title=title;
-    this.author=author;
-    this.pages=pages;
-    this.hasread=new Boolean(hasread);
-
-    this.info = function() {
-        if(hasread==true){
-            return `${title} by ${author}, ${pages} pages, have already read.`;
-        }
-        else {
-            return `${title} by ${author}, ${pages} pages, have not read yet.`;
+class library {
+    constructor(){
+        this.library=[];
+    }
+    addBookToLibrary(inputBook){
+        this.library.push(inputBook);
+        console.log("book added!");
+    };
+    setDataAttributes(){
+        for(let i=0; i<this.library.length; i++){
+            console.log(this.library[i].title);
+            
+            
         }
     }
-}
-
-//testing
-const theHobbit = new Book("The Hobbit", "J.R.R. Tolkein", 300, true);
-const myLeftFoot=new Book("My Left Foot","Christy Brown",184,false);
-
-function addBookToLibrary(inputBook){
-    myLibrary.push(inputBook);
-    console.log("book added!");
-}
-
-addBookToLibrary(theHobbit);
-addBookToLibrary(myLeftFoot);
-
-const container=document.querySelector(".main-content");
-
-//function to create book card to display on library site
-function addLibraryToDisplay(book) {
-    const bookCard=document.createElement("div");
-    bookCard.classList.add("book-info");
-    const pTitle=document.createElement("h2");
-    const pAuthor=document.createElement("h3");
-    const pPages=document.createElement("p");
-    const pHasRead=document.createElement("p");
-    pHasRead.classList.add("has-read-info");
-    pHasRead.classList.add(`${book.title}`.toLowerCase().split(" ").join("-"));
-    if(book.hasread==true){
-        pHasRead.textContent=`Have Read`;
-    }
-    else {
-        pHasRead.textContent=`Have Not Read`;
-    }
-    
-    pTitle.textContent=`${book.title}`;
-    bookCard.appendChild(pTitle);
-    pAuthor.textContent=`By ${book.author}`;
-    bookCard.appendChild(pAuthor);
-    pPages.textContent=`${book.pages} pages`
-    bookCard.appendChild(pPages);
-    bookCard.appendChild(pHasRead);
-
-    //make button container at end
-    const deleteBtn=document.createElement("button");
-    deleteBtn.classList.add("delete-btn");
-    deleteBtn.textContent="Remove Book";
-    deleteBtn.classList.add(`${book.title}`.toLowerCase().split(" ").join("-"));
-    deleteBtn.addEventListener("click",removeBook);
-    const hasReadBtn=document.createElement("button");
-    hasReadBtn.classList.add("has-read-btn");
-    hasReadBtn.textContent="Change Read Status";
-    hasReadBtn.classList.add(`${book.title}`.toLowerCase().split(" ").join("-"));
-    hasReadBtn.addEventListener("click",toggleHasRead);
-    const btnDiv=document.createElement("div");
-    btnDiv.classList.add("book-btn-section");
-    btnDiv.appendChild(deleteBtn);
-    btnDiv.appendChild(hasReadBtn);
-    bookCard.appendChild(btnDiv);
-    //adding to main body
-    container.appendChild(bookCard);
 };
 
+let myLibrary=new library;
 
 //button to add new book
 const showBookFormButton=document.querySelector("#showBookForm");
@@ -91,14 +31,72 @@ cancelButton.addEventListener("click", () => {
     dialogBookForm.close();
 });
 
+//class to create book class
+class Book {
+    constructor(title,author,pages,hasread){
+        this.title=title;
+        this.author=author;
+        this.pages=pages;
+        this.hasread=new Boolean(hasread);
+    }
+    addBookToDisplay(){
+        const bookCard=document.createElement("div");
+        bookCard.classList.add("book-info");
+        const pTitle=document.createElement("h2");
+        const pAuthor=document.createElement("h3");
+        const pPages=document.createElement("p");
+        const pHasRead=document.createElement("p");
+        pHasRead.classList.add("has-read-info");
+        pHasRead.classList.add(`${this.title}`.toLowerCase().split(" ").join("-"));
+        if(this.hasread==true){
+            pHasRead.textContent=`Have Read`;
+        }
+        else {
+            pHasRead.textContent=`Have Not Read`;
+        }
+        pTitle.textContent=`${this.title}`;
+        bookCard.appendChild(pTitle);
+        pAuthor.textContent=`By ${this.author}`;
+        bookCard.appendChild(pAuthor);
+        pPages.textContent=`${this.pages} pages`
+        bookCard.appendChild(pPages);
+        bookCard.appendChild(pHasRead);
+        //make button container at end
+        const deleteBtn=document.createElement("button");
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.textContent="Remove Book";
+        deleteBtn.classList.add(`${this.title}`.toLowerCase().split(" ").join("-"));
+        deleteBtn.addEventListener("click",removeBook);
+        const hasReadBtn=document.createElement("button");
+        hasReadBtn.classList.add("has-read-btn");
+        hasReadBtn.textContent="Change Read Status";
+        hasReadBtn.classList.add(`${this.title}`.toLowerCase().split(" ").join("-"));
+        hasReadBtn.addEventListener("click",toggleHasRead);
+        const btnDiv=document.createElement("div");
+        btnDiv.classList.add("book-btn-section");
+        btnDiv.appendChild(deleteBtn);
+        btnDiv.appendChild(hasReadBtn);
+        bookCard.appendChild(btnDiv);
+        //adding to main body
+        const container=document.querySelector(".main-content");
+        container.appendChild(bookCard);
+    };
+};
+
+//add initial books
+const theHobbit = new Book("The Hobbit", "J.R.R. Tolkein", 300, true);
+const myLeftFoot= new Book("My Left Foot","Christy Brown",184,false);
+
+myLibrary.addBookToLibrary(theHobbit);
+myLibrary.addBookToLibrary(myLeftFoot);
+
 submitBookButton.addEventListener("click", (e) => {
     const inputTitle=document.querySelector("#title");
     const inputAuthor=document.querySelector("#author");
     const inputPages=document.querySelector("#numPages");
     const checkTrue=document.querySelector("#hasRead").checked;
     const inputBook = new Book(inputTitle.value,inputAuthor.value,inputPages.value,checkTrue);
-    addBookToLibrary(inputBook);
-    addLibraryToDisplay(inputBook);
+    myLibrary.addBookToLibrary(inputBook);
     e.preventDefault();
     dialogBookForm.close();
     //resetting the values
@@ -109,15 +107,16 @@ submitBookButton.addEventListener("click", (e) => {
 });
 
 //button to remove book from library
-function removeBook () {    
-    let newLibrary=[];
-    myLibrary.forEach(book => {
+function removeBook() {
+    console.log(this);
+    let newLibrary= new library;
+    myLibrary.library.forEach(book => {
         const checkBookClass=book.title.toLowerCase().split(" ").join("-");
         if((this.classList[0]=="delete-btn")&&(checkBookClass==this.classList[1])){
             const bookContainer=document.querySelector(`button.${checkBookClass}`).parentNode.parentNode;
             container.removeChild(bookContainer);
         } else {
-            newLibrary.push(book);
+            newLibrary.library.push(book);
         }
     });
     myLibrary=newLibrary;
@@ -145,8 +144,4 @@ function toggleHasRead () {
     });
 }
 
-myLibrary.forEach(addLibraryToDisplay);
-
-
-
-
+myLibrary.library.forEach(book=>book.addBookToDisplay());

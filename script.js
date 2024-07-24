@@ -2,17 +2,18 @@ class library {
     constructor(){
         this.library=[];
     }
+
     addBookToLibrary(inputBook){
         this.library.push(inputBook);
-        console.log("book added!");
+        //console.log("book added!");
     };
-    setDataAttributes(){
-        for(let i=0; i<this.library.length; i++){
-            console.log(this.library[i].title);
-            
-            
-        }
-    }
+    removeBookFromLibrary(inputBook){
+        let index=this.library.indexOf(inputBook);
+        this.library.splice(index,1);
+        //console.log(this.library.indexOf(inputBook));
+        //console.log(this);
+        return this.library;
+    };
 };
 
 let myLibrary=new library;
@@ -39,6 +40,7 @@ class Book {
         this.pages=pages;
         this.hasread=new Boolean(hasread);
     }
+
     addBookToDisplay(){
         const bookCard=document.createElement("div");
         bookCard.classList.add("book-info");
@@ -62,7 +64,7 @@ class Book {
         bookCard.appendChild(pPages);
         bookCard.appendChild(pHasRead);
         //make button container at end
-        const deleteBtn=document.createElement("button");
+        let deleteBtn=document.createElement("button");
         deleteBtn.classList.add("delete-btn");
         deleteBtn.textContent="Remove Book";
         deleteBtn.classList.add(`${this.title}`.toLowerCase().split(" ").join("-"));
@@ -80,6 +82,9 @@ class Book {
         //adding to main body
         const container=document.querySelector(".main-content");
         container.appendChild(bookCard);
+    };
+    checkBookClass(){
+        return this.title.toLowerCase().split(" ").join("-");
     };
 };
 
@@ -104,35 +109,34 @@ submitBookButton.addEventListener("click", (e) => {
     inputAuthor.value="";
     inputPages.value="";
     document.querySelector("#hasRead").checked=false;
+    inputBook.addBookToDisplay();
 });
 
 //button to remove book from library
 function removeBook() {
-    console.log(this);
-    let newLibrary= new library;
+    //console.log(this);
     myLibrary.library.forEach(book => {
-        const checkBookClass=book.title.toLowerCase().split(" ").join("-");
-        if((this.classList[0]=="delete-btn")&&(checkBookClass==this.classList[1])){
+        let checkBookClass=book.checkBookClass();
+        //console.log(checkBookClass);
+        const container=document.querySelector(".main-content");
+        if((this.classList[0]=="delete-btn")&&(checkBookClass==this.classList[1])){   
             const bookContainer=document.querySelector(`button.${checkBookClass}`).parentNode.parentNode;
             container.removeChild(bookContainer);
-        } else {
-            newLibrary.library.push(book);
-        }
+            myLibrary.removeBookFromLibrary(book);
+        };
     });
-    myLibrary=newLibrary;
-    return myLibrary;
 };
 
 //button to toggle if book has been read
 function toggleHasRead () {
-    console.log(this);
-    myLibrary.forEach(book => {
-        const checkBookClass=book.title.toLowerCase().split(" ").join("-");
+    //console.log(this);
+    myLibrary.library.forEach(book => {
+        let checkBookClass=book.checkBookClass();
         if((this.classList[0]=="has-read-btn")&&(checkBookClass==this.classList[1])){
             const pToggle=document.querySelector(`p.${checkBookClass}`);
-            console.log(checkBookClass);
-            console.log(this);
-            console.log(pToggle);
+            //console.log(checkBookClass);
+            //console.log(this);
+            //console.log(pToggle);
             if(book.hasRead==true){
                 book.hasRead=false;
                 pToggle.textContent='Have Not Read';
@@ -142,6 +146,6 @@ function toggleHasRead () {
             }
         };
     });
-}
+};
 
 myLibrary.library.forEach(book=>book.addBookToDisplay());

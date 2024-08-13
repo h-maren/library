@@ -17,18 +17,18 @@
     </div>
 
     <dialog id="dialog">
-        <form method="submit" id="newBookForm">
+        <form id="newBookForm">
         <div class="form-row">
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" value="">
+            <input type="text" id="title" name="title" value="" required>
         </div>
         <div class="form-row">
             <label for="author">Author:</label>
-            <input type="text" id="author" name="author" value="">
+            <input type="text" id="author" name="author" value="" required>
         </div>
         <div class="form-row">
             <label for="numPages">Number of Pages:</label>
-            <input type="number" id="numPages" name="numPages" value="">
+            <input type="number" id="numPages" name="numPages" value=0 required min=1>
         </div>
         <div class="form-row">
             <label for="hasRead">Have Read?</label>

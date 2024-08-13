@@ -24,6 +24,12 @@ const dialogBookForm=document.querySelector("#dialog");
 const cancelButton=document.querySelector("#cancelBtn");
 const submitBookButton=document.querySelector("#addNewBookBtn");
 
+const inputTitle=document.querySelector("#title");
+const inputAuthor=document.querySelector("#author");
+const inputPages=document.querySelector("#numPages");
+const checkTrue=document.querySelector("#hasRead").checked;
+
+
 showBookFormButton.addEventListener("click", () => {
     dialogBookForm.showModal();
 });
@@ -31,6 +37,31 @@ showBookFormButton.addEventListener("click", () => {
 cancelButton.addEventListener("click", () => {
     dialogBookForm.close();
 });
+
+//form validity
+
+function checkFormValidity(){
+   if(inputTitle.validity.valueMissing){
+        inputTitle.setCustomValidity("Must input a title!");
+    }
+    if(inputAuthor.validity.valueMissing){
+        inputAuthor.setCustomValidity("Must input an author!");
+    }
+    if(inputPages.validity.rangeUnderflow){
+        inputPages.setCustomValidity("Must have more than 0 pages!");
+    }
+    let validateInputTitle=inputTitle.reportValidity();
+    let validateInputAuthor=inputAuthor.reportValidity();
+    let validateInputPages=inputPages.reportValidity();
+    console.log(validateInputTitle);
+    console.log(validateInputAuthor);
+    console.log(validateInputPages);
+    if(validateInputTitle&&validateInputAuthor&&validateInputPages){
+        return true;
+    } else {
+        return false;
+    }
+};
 
 //class to create book class
 class Book {
@@ -95,22 +126,25 @@ const myLeftFoot= new Book("My Left Foot","Christy Brown",184,false);
 myLibrary.addBookToLibrary(theHobbit);
 myLibrary.addBookToLibrary(myLeftFoot);
 
-submitBookButton.addEventListener("click", (e) => {
-    const inputTitle=document.querySelector("#title");
-    const inputAuthor=document.querySelector("#author");
-    const inputPages=document.querySelector("#numPages");
-    const checkTrue=document.querySelector("#hasRead").checked;
-    const inputBook = new Book(inputTitle.value,inputAuthor.value,inputPages.value,checkTrue);
-    myLibrary.addBookToLibrary(inputBook);
+dialogBookForm.addEventListener("submit", (e) => {
+    let isFormValid=checkFormValidity();
     e.preventDefault();
-    dialogBookForm.close();
-    //resetting the values
-    inputTitle.value="";
-    inputAuthor.value="";
-    inputPages.value="";
-    document.querySelector("#hasRead").checked=false;
-    inputBook.addBookToDisplay();
+    console.log(isFormValid);
+    if(isFormValid){
+        console.log("okay!");
+        const inputBook = new Book(inputTitle.value,inputAuthor.value,inputPages.value,checkTrue);
+        myLibrary.addBookToLibrary(inputBook);
+        //e.preventDefault();
+        dialogBookForm.close();
+        //resetting the values
+        inputTitle.value="";
+        inputAuthor.value="";
+        inputPages.value=0;
+        document.querySelector("#hasRead").checked=false;
+        inputBook.addBookToDisplay();
+    }
 });
+
 
 //button to remove book from library
 function removeBook() {
@@ -147,5 +181,8 @@ function toggleHasRead () {
         };
     });
 };
+
+
+
 
 myLibrary.library.forEach(book=>book.addBookToDisplay());
